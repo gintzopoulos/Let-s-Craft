@@ -19,6 +19,7 @@ public class UI_Sell_Weapon : MonoBehaviour
         c.gameObject.SetActive(false);
     }
 
+   
     // Update is called once per frame
     void Update()
     {
@@ -68,5 +69,6 @@ public class UI_Sell_Weapon : MonoBehaviour
         Canvas c = GetComponentInParent<Canvas>();
         c.gameObject.SetActive(false);
         RessourceManager.Instance.set_UI_Craft_Active(false);
+        Time.timeScale = 1f;
     }
 }

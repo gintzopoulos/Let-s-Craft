@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,13 +23,14 @@ public class Serviteur : MonoBehaviour
 
     public Serviteur()
     {
+
     }
 
 
     public void set_assigne(bool est) { this.estAssigne = est; }
     public bool get_Est_assigne() { return this.estAssigne; }
 
-    public void init(GameObject t,GameObject origin,GameObject serviteur, Canvas res, Canvas arme, AudioSource audioSourceVoix, GameObject tI=null)
+    public void init(GameObject t, GameObject origin, GameObject serviteur, Canvas res, Canvas arme, AudioSource audioSourceVoix, GameObject tI = null)
     {
         target = t;
         this.serviteur = serviteur;
@@ -39,14 +39,14 @@ public class Serviteur : MonoBehaviour
         this.Warning_Bubble_Ressources = res;
         this.Warning_Bubble_Arme = arme;
         this.audioSourceVoix = audioSourceVoix;
-        
+
     }
-     public void accelerer()
-     {
+    public void accelerer()
+    {
         if (this.speed < 3)
         {
-            this.speed = 0;          
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(200*sens, 150));
+            this.speed = 0;
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(200 * sens, 150));
             this.speed = 5;
             animator.runtimeAnimatorController = RessourceManager.Instance.get_Animator(speed);
             animator.speed = speed;
@@ -67,15 +67,15 @@ public class Serviteur : MonoBehaviour
         animator = GetComponent<Animator>();
         this.speed = Random.Range(1, 5);
         animator.runtimeAnimatorController = RessourceManager.Instance.get_Animator(speed);
-        animator.speed = speed ;
+        animator.speed = speed;
         b.onClick.AddListener(accelerer);
-        
+
     }
     void Update()
     {
         if (!Isobjectif_atteint)
         {
-            
+
             GameObject the_target_transform = null;
             if (target_intermediaire == null) { the_target_transform = target; }
             else if (target_intermediaire != null) { the_target_transform = target_intermediaire; }
@@ -85,34 +85,33 @@ public class Serviteur : MonoBehaviour
             Update_animation(the_target_transform);
 
         }
-
-
     }
+
     public void Agir_Stock(RessourceManager.MaterialRessourceType type)
     {
         this.type = type;
-        StartCoroutine("Ranger_Stock",type);        
+        StartCoroutine("Ranger_Stock", type);
     }
     public void Agir_Stock(RessourceManager.WeaponRessourceType type)
     {
         //this.type = type;
-        StartCoroutine("Ranger_Stock",type);        
+        StartCoroutine("Ranger_Stock", type);
     }
 
-    
     public void objectif_atteint(GameObject the_target_transform)
-    {      
+    {
+
         if (!Isobjectif_atteint)
         {
             float step = speed * Time.deltaTime;
-    
+
             if (transform.position.x == the_target_transform.transform.position.x)
             {
-                
+
                 if (target_intermediaire == null)
                 {
                     target.GetComponent<Interactable>().interagir(serviteur);
-                    Isobjectif_atteint = true; 
+                    Isobjectif_atteint = true;
                 }
                 else if (target_intermediaire != null)
                 {
@@ -120,12 +119,15 @@ public class Serviteur : MonoBehaviour
                     target_intermediaire = null;
                     Isobjectif_atteint = true;
                 }
-                
+
             }
-            
+
         }
 
-    } 
+    }
+
+
+    //Pour anmations
     void Update_animation(GameObject thetarget)
     {
 
@@ -146,27 +148,25 @@ public class Serviteur : MonoBehaviour
     {
         StartCoroutine("ouvrirPorte_Coroutine");
     }
-    public void teleporter(GameObject destination) {     
-        StartCoroutine("teleporte_Coroutine",destination.transform);
+    public void teleporter(GameObject destination)
+    {
+        StartCoroutine("teleporte_Coroutine", destination.transform);
     }
     public void apparaitre()
     {
-        StartCoroutine("apparaitre_Coroutine");        
+        StartCoroutine("apparaitre_Coroutine");
     }
-
     public void disparaitre()
     {
         StartCoroutine("disparaitre_Coroutine");
-        
-    }
 
+    }
     IEnumerator ouvrirPorte_Coroutine()
     {
         disparaitre();
         yield return new WaitForSeconds(2f);
-        
-    }
 
+    }
     IEnumerator disparaitre_Coroutine()
     {
         animator.SetBool("Disparaitre", true);
@@ -180,10 +180,9 @@ public class Serviteur : MonoBehaviour
         animator.SetBool("Disparaitre", false);
         //Isobjectif_atteint = true;
     }
-
     IEnumerator apparaitre_Coroutine()
     {
-       // Isobjectif_atteint = false;
+        // Isobjectif_atteint = false;
         animator.SetBool("Apparaitre", true);
         for (int i = 0; i <= 10; i++)
         {
@@ -196,7 +195,6 @@ public class Serviteur : MonoBehaviour
 
 
     }
-
     IEnumerator teleporte_Coroutine(Transform destination)
     {
         transform.position = destination.transform.position;
@@ -205,38 +203,38 @@ public class Serviteur : MonoBehaviour
         Isobjectif_atteint = false;
     }
     IEnumerator Ranger_Stock(RessourceManager.MaterialRessourceType type)
-        {
-            animator.SetBool("Range_Stock", true);
-            yield return new WaitForSeconds(2);
+    {
+        animator.SetBool("Range_Stock", true);
+        yield return new WaitForSeconds(2);
 
-            if (RessourceManager.Instance.Ajouter(type) == false)
-            {
-                Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(true);
-            }
-            else
-            {
-                Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(false);
-            }
-            serviteur.GetComponentInChildren<Image>().color = new Color(0f, 0f, 0f, 0f);
-            retour(null);
-            animator.SetBool("Range_Stock", false);
+        if (RessourceManager.Instance.Ajouter(type) == false)
+        {
+            Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(true);
+        }
+        else
+        {
+            Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(false);
+        }
+        serviteur.GetComponentInChildren<Image>().color = new Color(0f, 0f, 0f, 0f);
+        retour(null);
+        animator.SetBool("Range_Stock", false);
     }
     IEnumerator Ranger_Stock(RessourceManager.WeaponRessourceType type)
-        {
-            animator.SetBool("Range_Stock", true);
-            yield return new WaitForSeconds(2);
+    {
+        animator.SetBool("Range_Stock", true);
+        yield return new WaitForSeconds(2);
 
-            if (RessourceManager.Instance.Ajouter(type) == false)
-            {
-                Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(true);
-            }
-            else
-            {
-                Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(false);
-            }
+        if (RessourceManager.Instance.Ajouter(type) == false)
+        {
+            Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(true);
+        }
+        else
+        {
+            Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(false);
+        }
         serviteur.GetComponentInChildren<Image>().color = new Color(0f, 0f, 0f, 0f);
-            retour(RessourceManager.Instance.get_target(RessourceManager.Target.porteBas));
-            animator.SetBool("Range_Stock", false);
+        retour(RessourceManager.Instance.get_target(RessourceManager.Target.porteBas));
+        animator.SetBool("Range_Stock", false);
     }
-   
+
 }

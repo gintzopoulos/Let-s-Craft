@@ -24,6 +24,9 @@ public class WarSystem : MonoBehaviour
     public AudioMixer musicAudioMixer;
 
     public Button pauseButton;
+    public Button closeButton;
+    public Button Open_UI_Sell_Button;
+
     private bool isPause=false;
 
     // Start is called before the first frame update
@@ -41,6 +44,8 @@ public class WarSystem : MonoBehaviour
         warStatusBar.maxValue = 100f;
         warStatusBar.value = warStatusValue;
         pauseButton.onClick.AddListener(delegate { StartCoroutine("pauseCoroutine"); });
+        closeButton.onClick.AddListener(delegate {  Time.timeScale = 1f; });
+        Open_UI_Sell_Button.onClick.AddListener(delegate {  Time.timeScale = 0f; });
        
     }
 
@@ -62,8 +67,8 @@ public class WarSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
-        if (Menu_pause.Instance.gameIsPause == false && isPause == false)
+        
+        if (Menu_pause.Instance.gameIsPause == false && Time.timeScale!=0f )
         {
             pauseButton.interactable = RessourceManager.Instance.get_bourse() >= 100;
             warStatusValue += ((float)army1.power - (float)army2.power) * difficultyCoef;

@@ -13,6 +13,7 @@ public class UI_Craft_Stock : MonoBehaviour
     void Start()
     {
         
+        
     }
 
     // Update is called once per frame

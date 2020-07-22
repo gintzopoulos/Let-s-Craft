@@ -141,6 +141,7 @@ public class Batiment_Production_Arme : Batiment_Production
         audioSourceOpen.Play();
         UICraft.gameObject.SetActive(true);
         RessourceManager.Instance.set_UI_Craft_Active(true);
+        Time.timeScale = 0f;
     }
 
 }
