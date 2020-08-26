@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 
-public class WarSystem : MonoBehaviour
+public class WarSystem : Singleton<WarSystem>
 {
     public Army army1;
     public Army army2;
@@ -94,15 +94,17 @@ public class WarSystem : MonoBehaviour
 
     public void SellWeapon(int indexArmy, RessourceManager.WeaponRessourceType type, uint number)
     {
+        float percent = RessourceManager.Instance.getReputation();
+
         if (indexArmy == 1)
         {
             army1.power += RessourceManager.Instance.get_Arme(type).puissance * number;
-            RessourceManager.Instance.vendre_arme((int)(RessourceManager.Instance.get_Arme(type).prix * number));
+            RessourceManager.Instance.vendre_arme((int)(RessourceManager.Instance.get_Arme(type).prix*percent * number));
         }
         else
         {
             army2.power += RessourceManager.Instance.get_Arme(type).puissance * number;
-            RessourceManager.Instance.vendre_arme((int)(RessourceManager.Instance.get_Arme(type).prix * number));
+            RessourceManager.Instance.vendre_arme((int)(RessourceManager.Instance.get_Arme(type).prix*percent * number));
         }
     }
 }

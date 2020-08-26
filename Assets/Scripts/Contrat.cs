@@ -2,28 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Contrat : MonoBehaviour
+public class Contrat 
 {
     private int army;
-    private RessourceManager.WeaponRessourceType typeArme;
-    private int quantitee; 
+    private RessourceManager.WeaponRessourceType typeArme = RessourceManager.WeaponRessourceType.None;
+    private uint quantitee; 
     //limite de temps
 
     // Start is called before the first frame update
-    void Start()
-    {
-        //InitContrat();
-        //Debug.Log(army);
-        //Debug.Log(typeArme);
-        //Debug.Log(quantitee);
+    //void Start()
+    //{
+    //    //InitContrat();
+    //    //Debug.Log(army);
+    //    //Debug.Log(typeArme);
+    //    //Debug.Log(quantitee);
         
-    }
+    //}
 
-    // Update is called once per frame
-    void Update()
-    {
+    //// Update is called once per frame
+    //void Update()
+    //{
         
-    }
+    //}
     public Contrat() 
     {
         
@@ -34,7 +34,7 @@ public class Contrat : MonoBehaviour
         }
         else { army = 1; }
 
-        quantitee = Random.Range(1,31);
+        quantitee = (uint)Random.Range(1,31);
         switch (quantitee)
         {
            case 1:
@@ -90,10 +90,13 @@ public class Contrat : MonoBehaviour
 
         }
 
-        typeArme = (RessourceManager.WeaponRessourceType)Random.Range(1, System.Enum.GetValues(typeof(RessourceManager.WeaponRessourceType)).Length+1);
+        while(typeArme==RessourceManager.WeaponRessourceType.None)
+        {
+            typeArme = (RessourceManager.WeaponRessourceType)Random.Range(1, System.Enum.GetValues(typeof(RessourceManager.WeaponRessourceType)).Length);
+        }
     }
     public int getArmy(){return army;}
     public RessourceManager.WeaponRessourceType getTypeArme() { return typeArme; }
-    public int getQuantity() { return quantitee; }
+    public uint getQuantity() { return quantitee; }
 
 }

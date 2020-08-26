@@ -82,9 +82,9 @@ public class RessourceManager : Singleton<RessourceManager>
     private Dictionary<RessourceManager.WeaponRessourceType, Arme> m_dictionnaire_armes = new Dictionary<RessourceManager.WeaponRessourceType, Arme>();
     private int Compteur_Ressources;
     private int Compteur_Armes;
-    private int bourse=0;
+    private float bourse=0;
     private bool Is_UI_Craft_Active = false;
-
+    private int reputation = 50;
     
     public RuntimeAnimatorController get_Animator(float speed)
     {
@@ -107,7 +107,7 @@ public class RessourceManager : Singleton<RessourceManager>
     {
         return this.Is_UI_Craft_Active;
     }
-    public int get_bourse()
+    public float get_bourse()
     {
         return this.bourse;
     }
@@ -133,9 +133,27 @@ public class RessourceManager : Singleton<RessourceManager>
         return false;
     }
 
-    public void vendre_arme(int prix)
+    public void vendre_arme(float prix)
     {
         this.bourse += prix;
+        if (this.reputation < 100)
+        {
+            this.reputation += (int)prix / 50;
+        }
+    }
+
+    public void refuserContrat(uint prix)
+    {
+        if (this.reputation >= 0)
+        {
+            this.reputation -= (int)prix / 50;
+        }
+
+    }
+
+    public int getReputation()
+    {
+        return this.reputation;
     }
 
     public Dictionary<RessourceManager.WeaponRessourceType, Arme> get_All_Weapon()
@@ -327,6 +345,8 @@ public class RessourceManager : Singleton<RessourceManager>
                 }
             }
         }
+
+        Debug.Log(reputation);
     }
 }
 

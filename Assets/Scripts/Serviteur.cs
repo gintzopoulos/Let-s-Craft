@@ -19,7 +19,7 @@ public class Serviteur : MonoBehaviour
     public Button b;
     private int sens = 1;
     public AudioSource audioSourceVoix;
-
+    public int nbCoupDeFouet = 0;
 
     public Serviteur()
     {
@@ -51,6 +51,7 @@ public class Serviteur : MonoBehaviour
             animator.runtimeAnimatorController = RessourceManager.Instance.get_Animator(speed);
             animator.speed = speed;
             audioSourceVoix.Play();
+            nbCoupDeFouet++;
         }
 
     }
@@ -206,15 +207,15 @@ public class Serviteur : MonoBehaviour
     {
         animator.SetBool("Range_Stock", true);
         yield return new WaitForSeconds(2);
-
-        if (RessourceManager.Instance.Ajouter(type) == false)
-        {
-            Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(true);
-        }
-        else
-        {
-            Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(false);
-        }
+        RessourceManager.Instance.Ajouter(type);
+        //if (RessourceManager.Instance.Ajouter(type) == false)
+        //{
+        //    Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(true);
+        //}
+        //else
+        //{
+        //    Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(false);
+        //}
         serviteur.GetComponentInChildren<Image>().color = new Color(0f, 0f, 0f, 0f);
         retour(null);
         animator.SetBool("Range_Stock", false);
@@ -223,15 +224,15 @@ public class Serviteur : MonoBehaviour
     {
         animator.SetBool("Range_Stock", true);
         yield return new WaitForSeconds(2);
-
-        if (RessourceManager.Instance.Ajouter(type) == false)
-        {
-            Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(true);
-        }
-        else
-        {
-            Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(false);
-        }
+        RessourceManager.Instance.Ajouter(type);
+        //if (RessourceManager.Instance.Ajouter(type) == false)
+        //{
+        //    Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(true);
+        //}
+        //else
+        //{
+        //    Warning_Bubble_Ressources.GetComponent<Warning_Bubble>().setDisplay(false);
+        //}
         serviteur.GetComponentInChildren<Image>().color = new Color(0f, 0f, 0f, 0f);
         retour(RessourceManager.Instance.get_target(RessourceManager.Target.porteBas));
         animator.SetBool("Range_Stock", false);

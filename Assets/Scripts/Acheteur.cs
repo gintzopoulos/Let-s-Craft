@@ -16,6 +16,9 @@ public class Acheteur : MonoBehaviour
     private bool displayInfo = false;
     private bool afficheBulle = false;
     private bool estPremier = false;
+    float timerContrat = 300.0f;
+    int secondes;
+    int minutes;
 
     public Canvas UIContrat;
     public Canvas BulleContrat;
@@ -23,7 +26,11 @@ public class Acheteur : MonoBehaviour
     public TextMeshProUGUI QuantiteArme;
     public Button Accept;
     public Button Reject;
-    public Image army;
+    public GameObject ArmyContrat;
+    public GameObject ArmeContrat;
+    public Sprite ImageArmy1;
+    public Sprite ImageArmy2;
+    public TextMeshProUGUI Timer;
     
     // Start is called before the first frame update
     void Start()
@@ -33,6 +40,8 @@ public class Acheteur : MonoBehaviour
         animator.runtimeAnimatorController = RessourceManager.Instance.get_Animator(contrat.getArmy());
         SetUiContrat();
         Reject.onClick.AddListener(rejeter);
+        Accept.onClick.AddListener(AccepterContrat);
+       // Debug.Log(contrat.getTypeArme());
     }
 
     // Update is called once per frame
@@ -71,6 +80,7 @@ public class Acheteur : MonoBehaviour
 
         FadeCanvas();
         FadeBulle();
+        GetTimerContrat();
     }
 
     public void setTargetA(Vector2 t)
@@ -112,7 +122,7 @@ public class Acheteur : MonoBehaviour
     {
         BulleContrat.gameObject.SetActive(false);
         afficheBulle = false;
-        Debug.Log("setBulleInactive");
+        //Debug.Log("setBulleInactive");
     }
 
     void FadeCanvas()
@@ -163,9 +173,12 @@ public class Acheteur : MonoBehaviour
 
     public void SetUiContrat()
     {
-        int Qty = contrat.getQuantity();
+        uint Qty = contrat.getQuantity();
         RessourceManager.WeaponRessourceType typeArme = contrat.getTypeArme();
-
+        Sprite imageArme = RessourceManager.Instance.get_Arme(typeArme).image;
+                
+        setSpriteArmy();
+        ArmeContrat.GetComponent<SpriteRenderer>().sprite = imageArme; 
         QuantiteArme.text = contrat.getQuantity().ToString();
         QuantiteOr.text = (RessourceManager.Instance.get_Arme(typeArme).prix * Qty).ToString();
 
@@ -173,6 +186,51 @@ public class Acheteur : MonoBehaviour
 
     public void rejeter()
     {
+        aTerminer = true;
+        RessourceManager.Instance.refuserContrat(contrat.getQuantity() * RessourceManager.Instance.get_Arme(contrat.getTypeArme()).prix);
+    }
+
+    public void setSpriteArmy()
+    {
+        //army1 = badbees / army2 = badskulls
+        if (contrat.getArmy() == 1)
+        {
+            ArmyContrat.GetComponent<SpriteRenderer>().sprite = ImageArmy1;
+        }
+        else
+        {
+            ArmyContrat.GetComponent<SpriteRenderer>().sprite = ImageArmy2;
+        }
+    }
+
+    public void GetTimerContrat()
+    {
+        if (estArrive && estPremier)
+        {
+            timerContrat -= Time.deltaTime;
+            secondes = (int)(timerContrat % 60);
+            minutes = (int)(timerContrat / 60);
+            Timer.text = minutes.ToString() + "," + secondes.ToString();
+
+            if (timerContrat <= 0.0f)
+            {
+                rejeter();
+            }
+        }
+
+
+
+    }
+
+    public void AccepterContrat()
+    {
+        if (contrat.getQuantity() > RessourceManager.Instance.get_Arme(contrat.getTypeArme()).nb) { return; }
+        RessourceManager.Instance.Supprimer(contrat.getTypeArme(), contrat.getQuantity());
+
+        WarSystem.Instance.SellWeapon(contrat.getArmy(), contrat.getTypeArme(), contrat.getQuantity());
+
+
+        Debug.Log("ContratAccepter");
         aTerminer = true;
     }
 }

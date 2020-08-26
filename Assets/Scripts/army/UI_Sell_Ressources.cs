@@ -97,8 +97,13 @@ public class UI_Sell_Ressources : MonoBehaviour
         if (m_type != RessourceManager.WeaponRessourceType.None)
         {
             RessourceManager.Arme arme = RessourceManager.Instance.get_Arme(m_type);
-            puissance.text = "Puissance : " + arme.puissance.ToString();
-            vente.text = "Vente : " + arme.prix.ToString();
+            float prixArme = (float)arme.prix;
+            float reputation = RessourceManager.Instance.getReputation();
+            float percent = reputation / 100;
+            float prix_final = prixArme * percent;
+            
+            puissance.text = "Puissance : " +arme.puissance.ToString();
+            vente.text = "Vente : " + prix_final.ToString();
         }
     }
 

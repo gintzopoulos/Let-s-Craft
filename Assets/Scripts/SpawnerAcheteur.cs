@@ -10,7 +10,8 @@ public class SpawnerAcheteur : MonoBehaviour
     private ArrayList posAcheteur;
     private GameObject last;
     private GameObject first;
-    private int limiteSpawn = 2;
+    private int limiteSpawn = 4;
+    private int max_spawn = 8;
     private int cpt = 0;
     
 
@@ -26,8 +27,11 @@ public class SpawnerAcheteur : MonoBehaviour
         first = (GameObject)posAcheteur[0];
         last = (GameObject)posAcheteur[posAcheteur.Count - 1];
         Acheteur lastAcheteur = last.GetComponent<Acheteur>();
-        
-        if (lastAcheteur.getBool_estArrive() == true && cpt < limiteSpawn)
+        float reputation = (float)RessourceManager.Instance.getReputation();
+        float pourcent = ((reputation/100)*max_spawn)+1;
+        limiteSpawn = (int)pourcent;
+        Debug.Log(pourcent);
+        if (lastAcheteur.getBool_estArrive() == true && cpt < limiteSpawn )
         {
             spawnAcheteur();
         }

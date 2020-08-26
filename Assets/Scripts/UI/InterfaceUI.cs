@@ -13,6 +13,18 @@ public class InterfaceUI : MonoBehaviour//, IPointerEnterHandler, IPointerExitHa
     public float fadeTime;
     public bool displayInfo;
 
+    public Button buttonBulleAchatServ;
+    public SpriteRenderer bulleAchatServ;
+    bool bulleAchatServestActive = true;
+
+    public Button buttonBullePlusMoins;
+    public SpriteRenderer bullePlusMoins;
+    bool bulleAjoutestActive = true;
+
+    public Button buttonBulleCraft;
+    public SpriteRenderer bulleCraft;
+    bool bulleCraftestActive = true;
+
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +33,10 @@ public class InterfaceUI : MonoBehaviour//, IPointerEnterHandler, IPointerExitHa
         //myText = GameObject.Find("TextCanvas").GetComponent<Text>();
         myText.color = Color.clear;
         Cursor.visible = true;
+
+        buttonBulleCraft.onClick.AddListener(delegate { FadeBulle(bulleCraft); } );
+        buttonBullePlusMoins.onClick.AddListener(delegate { FadeBulle(bullePlusMoins); } );
+        buttonBulleAchatServ.onClick.AddListener(delegate { FadeBulle(bulleAchatServ); } );
 
     }
 
@@ -77,6 +93,56 @@ public class InterfaceUI : MonoBehaviour//, IPointerEnterHandler, IPointerExitHa
         else
         {
             myCanvas.gameObject.SetActive(false);
+        }
+
+    }
+
+    void FadeBulle(SpriteRenderer sr)
+    {
+        if (sr == bulleCraft)
+        {
+            if (bulleCraftestActive)
+            {
+                sr.gameObject.SetActive(false);
+                bulleCraftestActive = false;
+            }
+            else
+            {
+                sr.gameObject.SetActive(true);
+                bulleCraftestActive = true;
+
+            }
+
+        }
+          
+        if (sr == bulleAchatServ)
+        {
+            if (bulleAchatServestActive)
+            {
+                sr.gameObject.SetActive(false);
+                bulleAchatServestActive = false;
+            }
+            else
+            {
+                sr.gameObject.SetActive(true);
+                bulleAchatServestActive = true;
+
+            }
+        }
+
+        if (sr == bullePlusMoins)
+        {
+            if (bulleAjoutestActive)
+            {
+                sr.gameObject.SetActive(false);
+                bulleAjoutestActive = false;
+            }
+            else
+            {
+                sr.gameObject.SetActive(true);
+                bulleAjoutestActive = true;
+
+            }
         }
 
     }
